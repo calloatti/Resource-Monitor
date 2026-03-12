@@ -31,3 +31,5 @@ NOTES
 * The building must be connected to a path within a valid District.
 * Placed buildings will automatically detect their district and begin sampling.
 * Fully compatible with standard and modded automation networks.
+
+https://github.com/calloatti/Resource-Monitor
