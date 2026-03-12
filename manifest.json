@@ -1,0 +1,9 @@
+{
+  "Name": "Resource Monitor",
+  "Version": "1.0.0",
+  "Id": "Calloatti.ResourceMonitor",
+  "MinimumGameVersion": "1.0.0.0",
+  "Description": "Monitors two resource values",
+  "RequiredMods": [
+  ]
+}

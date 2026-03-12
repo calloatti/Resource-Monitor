@@ -1,0 +1,42 @@
+<UXML xmlns:ui="UnityEngine.UIElements">
+  <ui:VisualElement name="ResourceMonitorFragment" class="entity-sub-panel bg-sub-box--green">
+    
+    <ui:Label text="Good to Monitor" class="unity-text-element unity-label game-text-normal" style="margin-bottom: 5px;" />
+    
+    <Dropdown name="Good" class="game-dropdown">
+      <ui:VisualElement name="Dropdown" class="dropdown">
+        <NineSliceLabel name="Label" class="unity-text-element unity-label dropdown__label" />
+        <NineSliceButton name="Selection" class="unity-text-element unity-button dropdown__selection">
+          <ui:VisualElement name="SelectedItem" class="dropdown__selected-item">
+            <ui:VisualElement name="SelectedItemContent" class="dropdown__selected-item-content" />
+            <ui:VisualElement name="SelectedItemOverlay" class="dropdown__selected-item-overlay" />
+          </ui:VisualElement>
+          <ui:Button name="ArrowLeft" class="unity-text-element unity-button dropdown__arrow dropdown__arrow-left" />
+          <ui:Button name="ArrowRight" class="unity-text-element unity-button dropdown__arrow dropdown__arrow-right" />
+          <ui:Button name="ArrowDown" class="unity-text-element unity-button dropdown__arrow dropdown__arrow-down" />
+        </NineSliceButton>
+      </ui:VisualElement>
+    </Dropdown>
+    
+    <ui:Label name="Measurement" class="unity-text-element unity-label game-text-big automation-counter-fragment__measurement" style="margin-top: 10px; margin-bottom: 10px;" />
+    
+    <ui:VisualElement style="flex-direction: row; justify-content: space-between; margin-bottom: 5px;">
+      <ui:Label text="Turn ON Threshold:" class="unity-text-element unity-label game-text-normal" style="align-self: center;" />
+      <NineSliceIntegerField name="ThresholdOn" class="unity-base-field unity-base-field--no-label unity-base-text-field unity-integer-field entity-panel-setting__input entity-panel-input automation-fragment__integer-input">
+        <ui:IntegerInput name="unity-text-input" class="unity-base-text-field__input unity-base-text-field__input--single-line unity-base-field__input unity-integer-field__input">
+          <ui:TextElement name="TextElement" class="unity-text-element unity-text-element__selectable unity-text-element--inner-input-field-component" />
+        </ui:IntegerInput>
+      </NineSliceIntegerField>
+    </ui:VisualElement>
+
+    <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
+      <ui:Label text="Turn OFF Threshold:" class="unity-text-element unity-label game-text-normal" style="align-self: center;" />
+      <NineSliceIntegerField name="ThresholdOff" class="unity-base-field unity-base-field--no-label unity-base-text-field unity-integer-field entity-panel-setting__input entity-panel-input automation-fragment__integer-input">
+        <ui:IntegerInput name="unity-text-input" class="unity-base-text-field__input unity-base-text-field__input--single-line unity-base-field__input unity-integer-field__input">
+          <ui:TextElement name="TextElement" class="unity-text-element unity-text-element__selectable unity-text-element--inner-input-field-component" />
+        </ui:IntegerInput>
+      </NineSliceIntegerField>
+    </ui:VisualElement>
+    
+  </ui:VisualElement>
+</UXML>

@@ -1,0 +1,6 @@
+ID,Text,Comment
+Building.ResourceMonitor.DisplayName,"Resource Monitor",
+Building.ResourceMonitor.Description,"Changes and holds its state based on a min and max signals",
+Building.ResourceMonitor.FlavorDescription,"Better than a Resource Counter!",
+Building.ResourceMonitor.Mode.FillRate,"Percent (%)",
+Building.ResourceMonitor.Mode.StockLevel,"Quantity",

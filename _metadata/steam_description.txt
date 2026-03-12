@@ -1,0 +1,33 @@
+Take control of your district's production with the Resource Monitor! This 
+custom automation building allows you to track the exact inventory of any 
+resource in its connected district and send automation signals to your network.
+
+FEATURES
+--------
+* Monitor Any Resource: Choose from Water, Logs, Iron, or any custom modded
+  good using the built-in dropdown menu.
+* Two Tracking Modes:
+  - Stock Level: Track the absolute number of items (e.g., exactly 500 Water).
+  - Fill Rate: Track the percentage of your storage capacity (e.g., 80% full).
+* Smart Thresholds: Set independent ON and OFF thresholds to create a
+  hysteresis loop, preventing buildings from rapidly flickering on and off.
+* Visual Feedback: The building banner automatically updates to display the
+  icon of the currently monitored resource.
+
+HOW IT WORKS
+------------
+Connect the Resource Monitor to your mechanical automation network. When the
+monitored resource hits your target thresholds, it outputs a True/False signal.
+
+Example Use Cases:
+* Auto-Pumps: Set to monitor Water. Turn ON when fill rate drops below 20%,
+  and turn OFF when fill rate reaches 95%. Connect to your water pumps so
+  beavers stop pumping when tanks are full!
+* Smart Factories: Only run the Gear Workshop when Log stock is above 200 to
+  ensure you always have enough raw materials for building.
+
+NOTES
+-----
+* The building must be connected to a path within a valid District.
+* Placed buildings will automatically detect their district and begin sampling.
+* Fully compatible with standard and modded automation networks.
