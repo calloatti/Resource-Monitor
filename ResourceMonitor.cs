@@ -3,16 +3,15 @@ using Timberborn.Automation;
 using Timberborn.AutomationBuildings;
 using Timberborn.BaseComponentSystem;
 using Timberborn.DuplicationSystem;
+using Timberborn.EntitySystem;
 using Timberborn.GameDistricts;
 using Timberborn.Goods;
 using Timberborn.Persistence;
-using Timberborn.ResourceCountingSystem;
 using Timberborn.WorldPersistence;
-using UnityEngine;
 
 namespace Calloatti.ResourceMonitor
 {
-  public class ResourceMonitor : BaseComponent, ISamplingTransmitter, ITransmitter, IPersistentEntity, IDuplicable<ResourceMonitor>, IDuplicable, IStartableComponent
+  public class ResourceMonitor : BaseComponent, ISamplingTransmitter, ITransmitter, IPersistentEntity, IDuplicable<ResourceMonitor>, IDuplicable, IInitializableEntity, IStartableComponent, IDeletableEntity
   {
     private static readonly ComponentKey ResourceMonitorKey = new ComponentKey("ResourceMonitor");
     private static readonly PropertyKey<string> GoodIdKey = new PropertyKey<string>("GoodId");
@@ -28,7 +27,7 @@ namespace Calloatti.ResourceMonitor
     private static readonly PropertyKey<bool> CurrentlyActiveKey = new PropertyKey<bool>("CurrentlyActive");
 
     private readonly IGoodService _goodService;
-    private readonly ResourceCountingService _resourceCountingService;
+    private readonly SamplingResourcesService _samplingResourcesService;
 
     private Automator _automator;
     private DistrictBuilding _districtBuilding;
@@ -49,25 +48,26 @@ namespace Calloatti.ResourceMonitor
     private bool _currentlyActive;
     public event EventHandler<string> GoodChanged;
 
-    internal ResourceMonitor(IGoodService goodService, ResourceCountingService resourceCountingService)
+    internal ResourceMonitor(IGoodService goodService, SamplingResourcesService samplingResourcesService)
     {
       _goodService = goodService;
-      _resourceCountingService = resourceCountingService;
+      _samplingResourcesService = samplingResourcesService;
     }
 
     public void Awake()
     {
-      Debug.Log($"[ResourceMonitor] Awake called.");
+      // Vanilla exactly: unconditionally grabs the first valid good in the registry (Water) 
+      // so the banner has a valid texture to paint the moment it is placed while paused.
       if (_goodService != null && _goodService.Goods.Count > 0 && string.IsNullOrEmpty(GoodId))
       {
-        if (_goodService.Goods.Contains("Water")) { GoodId = "Water"; }
-        else { GoodId = _goodService.Goods[0]; }
+        GoodId = _goodService.Goods[0];
       }
+    }
 
+    public void InitializeEntity()
+    {
       _automator = GetComponent<Automator>();
       _districtBuilding = GetComponent<DistrictBuilding>();
-
-      Debug.Log($"[ResourceMonitor] Awake Fetch -> Automator: {_automator != null}, DistrictBuilding: {_districtBuilding != null}");
 
       if (_districtBuilding != null)
       {
@@ -75,12 +75,23 @@ namespace Calloatti.ResourceMonitor
         _districtBuilding.ReassignedInstantDistrict += OnReassignedInstantDistrict;
         _districtBuilding.ReassignedConstructionDistrict += OnReassignedConstructionDistrict;
       }
+
+      Sample();
     }
 
     public void Start()
     {
-      Debug.Log($"[ResourceMonitor] Start called.");
-      Sample();
+      _automator?.SetState(_currentlyActive);
+    }
+
+    public void DeleteEntity()
+    {
+      if (_districtBuilding != null)
+      {
+        _districtBuilding.ReassignedDistrict -= OnReassignedDistrict;
+        _districtBuilding.ReassignedInstantDistrict -= OnReassignedInstantDistrict;
+        _districtBuilding.ReassignedConstructionDistrict -= OnReassignedConstructionDistrict;
+      }
     }
 
     public void Save(IEntitySaver entitySaver)
@@ -134,6 +145,8 @@ namespace Calloatti.ResourceMonitor
       ThresholdOff = source.ThresholdOff;
       FillRateThresholdOff = source.FillRateThresholdOff;
 
+      _currentlyActive = source._currentlyActive;
+
       InvokeGoodChangeEvent(source.GoodId);
       Sample();
     }
@@ -150,35 +163,16 @@ namespace Calloatti.ResourceMonitor
 
     public void Sample()
     {
-      // RETRY LOGIC: If Awake missed them, keep trying every time Sample runs.
-      if (_automator == null)
-      {
-        _automator = GetComponent<Automator>();
-        if (_automator != null) Debug.Log($"[ResourceMonitor] Sample Retry -> Automator successfully found!");
-      }
-
-      if (_districtBuilding == null)
-      {
-        _districtBuilding = GetComponent<DistrictBuilding>();
-        if (_districtBuilding != null)
-        {
-          Debug.Log($"[ResourceMonitor] Sample Retry -> DistrictBuilding successfully found! Binding events.");
-          _districtBuilding.ReassignedDistrict += OnReassignedDistrict;
-          _districtBuilding.ReassignedInstantDistrict += OnReassignedInstantDistrict;
-          _districtBuilding.ReassignedConstructionDistrict += OnReassignedConstructionDistrict;
-        }
-      }
-
-      if (string.IsNullOrEmpty(GoodId) || _resourceCountingService == null)
+      if (string.IsNullOrEmpty(GoodId) || _samplingResourcesService == null)
       {
         return;
       }
 
-      DistrictCenter district = _districtBuilding != null ? _districtBuilding.District : null;
+      DistrictCenter district = _districtBuilding != null ? _districtBuilding.GetInstantOrConstructionDistrict() : null;
 
       if (district != null)
       {
-        var districtCounter = _resourceCountingService.GetDistrictResourceCounter(district);
+        var districtCounter = _samplingResourcesService.GetDistrictCounter(district);
         var resourceCount = districtCounter.GetResourceCount(GoodId);
 
         if (Mode == ResourceCounterMode.StockLevel)
@@ -192,7 +186,6 @@ namespace Calloatti.ResourceMonitor
       }
       else
       {
-        Debug.Log($"[ResourceMonitor] District still NULL.");
         SampledResourceCount = 0;
         SampledFillRate = 0f;
       }
@@ -200,52 +193,43 @@ namespace Calloatti.ResourceMonitor
       UpdateOutputState();
     }
 
-    // INDIVIDUAL EVENT HANDLERS TO LOG EXACTLY WHICH ONE FIRED
     private void OnReassignedDistrict(object sender, EventArgs e)
     {
-      Debug.Log($"[ResourceMonitor] Event Fired: ReassignedDistrict");
       Sample();
     }
 
     private void OnReassignedInstantDistrict(object sender, EventArgs e)
     {
-      Debug.Log($"[ResourceMonitor] Event Fired: ReassignedInstantDistrict");
       Sample();
     }
 
     private void OnReassignedConstructionDistrict(object sender, EventArgs e)
     {
-      Debug.Log($"[ResourceMonitor] Event Fired: ReassignedConstructionDistrict");
       Sample();
     }
 
     private void UpdateOutputState()
     {
-      bool isOffConditionMet = false;
-      bool isOnConditionMet = false;
-
-      if (Mode == ResourceCounterMode.StockLevel)
-      {
-        if (SampledResourceCount >= ThresholdOff) isOffConditionMet = true;
-        if (SampledResourceCount <= ThresholdOn) isOnConditionMet = true;
-      }
-      else
-      {
-        if (SampledFillRate >= FillRateThresholdOff) isOffConditionMet = true;
-        if (SampledFillRate <= FillRateThresholdOn) isOnConditionMet = true;
-      }
-
-      if (isOffConditionMet)
+      if (_districtBuilding != null && _districtBuilding.GetInstantOrConstructionDistrict() == null)
       {
         _currentlyActive = false;
-      }
-      else if (isOnConditionMet)
-      {
-        _currentlyActive = true;
+        _automator?.SetState(_currentlyActive);
+        return;
       }
 
-      // Output value spam removed as requested
-      _automator?.SetState(_currentlyActive);
+      bool targetState = _currentlyActive;
+
+      if (Mode == ResourceCounterMode.StockLevel && SampledResourceCount <= ThresholdOn) targetState = true;
+      if (Mode == ResourceCounterMode.FillRate && SampledFillRate <= FillRateThresholdOn) targetState = true;
+
+      if (Mode == ResourceCounterMode.StockLevel && SampledResourceCount >= ThresholdOff) targetState = false;
+      if (Mode == ResourceCounterMode.FillRate && SampledFillRate >= FillRateThresholdOff) targetState = false;
+
+      if (targetState != _currentlyActive)
+      {
+        _currentlyActive = targetState;
+        _automator?.SetState(_currentlyActive);
+      }
     }
 
     private void InvokeGoodChangeEvent(string goodId)

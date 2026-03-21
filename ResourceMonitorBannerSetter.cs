@@ -2,12 +2,13 @@
 using Timberborn.BaseComponentSystem;
 using Timberborn.BlockSystem;
 using Timberborn.Buildings;
+using Timberborn.EntitySystem;
 using Timberborn.Goods;
 using UnityEngine;
 
 namespace Calloatti.ResourceMonitor
 {
-  public class ResourceMonitorBannerSetter : BaseComponent, IAwakableComponent, IStartableComponent
+  public class ResourceMonitorBannerSetter : BaseComponent, IAwakableComponent, IStartableComponent, IDeletableEntity
   {
     private static readonly Color BannerIconColor = new Color(0.33f, 0.33f, 0.33f);
 
@@ -37,6 +38,14 @@ namespace Calloatti.ResourceMonitor
     {
       _resourceMonitor.GoodChanged += OnGoodChanged;
       UpdateProperties();
+    }
+
+    public void DeleteEntity()
+    {
+      if (_resourceMonitor != null)
+      {
+        _resourceMonitor.GoodChanged -= OnGoodChanged;
+      }
     }
 
     private void OnGoodChanged(object sender, string e)

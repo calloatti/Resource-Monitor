@@ -9,7 +9,7 @@
       { "Id": "MetalBlock", "Amount": 1 },
       { "Id": "Extract", "Amount": 1}
     ],
-    "ScienceCost": 250,
+    "ScienceCost": 1250,
     "PlaceFinished": false,
     "FinishableWithBeaversOnSite": false,
     "DrawRangeBoundsOnIt": false

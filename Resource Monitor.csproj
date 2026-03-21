@@ -11,6 +11,22 @@
     <TimberbornPath>C:\Program Files (x86)\Steam\steamapps\common\Timberborn\Timberborn_Data\Managed</TimberbornPath>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PublicizerRuntimeStrategies>Unsafe</PublicizerRuntimeStrategies>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Publicize Include="Timberborn.AutomationBuildings" />
+  </ItemGroup>
+
+
 <ItemGroup>
     <Reference Include="$(TimberbornPath)\Timberborn.*.dll" />
     <Reference Include="$(TimberbornPath)\Bindito.*.dll" />
@@ -85,11 +101,13 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="powershell -Command &quot;Get-ChildItem '$(TargetDir)' -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force&quot;&#xD;&#xA;powershell -Command &quot;Get-ChildItem -Path '$(USERPROFILE)\Documents\Timberborn\Mods\$(ProjectName)' -Exclude 'workshop_data.json' -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force&quot;" /> 
+    <Exec Command="powershell -Command &quot;Get-ChildItem '$(TargetDir)' -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force&quot;" />
   </Target>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="powershell -Command &quot;Copy-Item -Path '$(TargetDir)*' -Destination '$(USERPROFILE)\Documents\Timberborn\Mods\$(ProjectName)' -Recurse -Force&quot;" /> 
+    <Exec Command="powershell -Command &quot;Get-ChildItem -Path '$(USERPROFILE)\Documents\Timberborn\Mods\$(ProjectName)' -Exclude 'workshop_data.json' -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force&quot;" />
+    
+    <Exec Command="powershell -Command &quot;Copy-Item -Path '$(TargetDir)*' -Destination '$(USERPROFILE)\Documents\Timberborn\Mods\$(ProjectName)' -Recurse -Force&quot;" />
   </Target>
 
 </Project>

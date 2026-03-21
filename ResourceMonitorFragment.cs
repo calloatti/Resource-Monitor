@@ -5,6 +5,7 @@ using Timberborn.BaseComponentSystem;
 using Timberborn.CoreUI;
 using Timberborn.DropdownSystem;
 using Timberborn.EntityPanelSystem;
+using Timberborn.Localization;
 using UnityEngine.UIElements;
 
 namespace Calloatti.ResourceMonitor
@@ -13,9 +14,16 @@ namespace Calloatti.ResourceMonitor
   {
     private static readonly string ModeLocKeyPrefix = "Building.ResourceMonitor.Mode.";
 
+    // Our new localization keys matching your CSV
+    private static readonly string TurnOnIfLocKey = "Building.ResourceMonitor.TurnOnIf";
+    private static readonly string TurnOffIfLocKey = "Building.ResourceMonitor.TurnOffIf";
+    private static readonly string MeasurementQuantityLocKey = "Building.ResourceMonitor.MeasurementQuantity";
+    private static readonly string MeasurementPercentLocKey = "Building.ResourceMonitor.MeasurementPercent";
+
     private readonly VisualElementLoader _visualElementLoader;
     private readonly DropdownItemsSetter _dropdownItemsSetter;
     private readonly RadioToggleFactory _radioToggleFactory;
+    private readonly ILoc _loc;
 
     private ResourceMonitor _resourceMonitor;
     private ResourceMonitorGoodsDropdownProvider _goodsDropdownProvider;
@@ -39,11 +47,13 @@ namespace Calloatti.ResourceMonitor
     public ResourceMonitorFragment(
         VisualElementLoader visualElementLoader,
         DropdownItemsSetter dropdownItemsSetter,
-        RadioToggleFactory radioToggleFactory)
+        RadioToggleFactory radioToggleFactory,
+        ILoc loc)
     {
       _visualElementLoader = visualElementLoader;
       _dropdownItemsSetter = dropdownItemsSetter;
       _radioToggleFactory = radioToggleFactory;
+      _loc = loc;
     }
 
     public VisualElement InitializeFragment()
@@ -53,15 +63,25 @@ namespace Calloatti.ResourceMonitor
 
       _modeRadioToggle = _radioToggleFactory.CreateLocalizable<ResourceCounterMode>(ModeLocKeyPrefix, _root.Q<VisualElement>("ModeRadioToggleContainer"));
       _modeRadioToggle.RadioButtonSelected += (sender, index) => {
-        _resourceMonitor.SetMode((ResourceCounterMode)index);
-        UpdateFragment();
+        // Consistency Fix: Added null check
+        if (_resourceMonitor != null)
+        {
+          _resourceMonitor.SetMode((ResourceCounterMode)index);
+          UpdateFragment();
+        }
       };
 
       _goodDropdown = _root.Q<Dropdown>("Good");
       _measurement = _root.Q<Label>("Measurement");
 
       _includeInputsToggle = _root.Q<Toggle>("Toggle");
-      _includeInputsToggle.RegisterValueChangedCallback(evt => _resourceMonitor.SetIncludeInputs(evt.newValue));
+      _includeInputsToggle.RegisterValueChangedCallback(evt => {
+        // Consistency Fix: Added null check
+        if (_resourceMonitor != null)
+        {
+          _resourceMonitor.SetIncludeInputs(evt.newValue);
+        }
+      });
 
       // 1. Setup ON Controls
       var onWrapper = _root.Q<VisualElement>("ComparisonWrapper");
@@ -76,6 +96,7 @@ namespace Calloatti.ResourceMonitor
         if (_resourceMonitor != null)
         {
           int val = Math.Max(0, evt.newValue);
+
           _thresholdOnField.SetValueWithoutNotify(val);
           _resourceMonitor.SetThresholdOn(val);
         }
@@ -90,7 +111,8 @@ namespace Calloatti.ResourceMonitor
         }
       });
 
-      var onTitle = new Label("Turn ON if \u2264"); // Uses the ≤ symbol
+      // Use ILoc for the ON title
+      var onTitle = new Label(_loc.T(TurnOnIfLocKey));
       onTitle.AddToClassList("game-text-normal");
       onTitle.style.marginTop = 10;
       bottomSection.Insert(bottomSection.IndexOf(onWrapper), onTitle);
@@ -110,6 +132,7 @@ namespace Calloatti.ResourceMonitor
         if (_resourceMonitor != null)
         {
           int val = Math.Max(0, evt.newValue);
+
           _thresholdOffField.SetValueWithoutNotify(val);
           _resourceMonitor.SetThresholdOff(val);
         }
@@ -124,7 +147,8 @@ namespace Calloatti.ResourceMonitor
         }
       });
 
-      var offTitle = new Label("Turn OFF if \u2265"); // Uses the ≥ symbol
+      // Use ILoc for the OFF title
+      var offTitle = new Label(_loc.T(TurnOffIfLocKey));
       offTitle.AddToClassList("game-text-normal");
       offTitle.style.marginTop = 10;
       bottomSection.Add(offTitle);
@@ -170,10 +194,10 @@ namespace Calloatti.ResourceMonitor
         _fillRateSliderOn.SetMarker(_resourceMonitor.SampledFillRate);
         _fillRateSliderOff.SetMarker(_resourceMonitor.SampledFillRate);
 
-        // Bypassing Timberborn's text localizer completely to guarantee numbers show up!
+        // Uses ILoc for the dynamic measurement text, passing in the arguments for the {0} placeholder.
         _measurement.text = _resourceMonitor.Mode == ResourceCounterMode.StockLevel
-            ? $"Measurement: {_resourceMonitor.SampledResourceCount}"
-            : $"Measurement: {Math.Round(_resourceMonitor.SampledFillRate * 100)}%";
+            ? _loc.T(MeasurementQuantityLocKey, _resourceMonitor.SampledResourceCount)
+            : _loc.T(MeasurementPercentLocKey, Math.Round(_resourceMonitor.SampledFillRate * 100));
 
         _fillRateLabelOn.text = $"{Math.Round(_resourceMonitor.FillRateThresholdOn * 100)}%";
         _fillRateLabelOff.text = $"{Math.Round(_resourceMonitor.FillRateThresholdOff * 100)}%";
