@@ -11,7 +11,7 @@ using Timberborn.WorldPersistence;
 
 namespace Calloatti.ResourceMonitor
 {
-  public class ResourceMonitor : BaseComponent, ISamplingTransmitter, ITransmitter, IPersistentEntity, IDuplicable<ResourceMonitor>, IDuplicable, IInitializableEntity, IStartableComponent, IDeletableEntity
+  public class ResourceMonitor : BaseComponent, ISamplingTransmitter, ITransmitter, IPersistentEntity, IDuplicable<ResourceMonitor>, IDuplicable, IInitializableEntity, IDeletableEntity
   {
     private static readonly ComponentKey ResourceMonitorKey = new ComponentKey("ResourceMonitor");
     private static readonly PropertyKey<string> GoodIdKey = new PropertyKey<string>("GoodId");
@@ -32,7 +32,22 @@ namespace Calloatti.ResourceMonitor
     private Automator _automator;
     private DistrictBuilding _districtBuilding;
 
-    public string GoodId { get; private set; }
+    // FIX: Converted into a smart property. If early lifecycle methods query this before initialization,
+    // it safely self-initializes on-demand as soon as the global goods registry is ready.
+    private string _goodId;
+    public string GoodId
+    {
+      get
+      {
+        if (string.IsNullOrEmpty(_goodId) && _goodService != null && _goodService.Goods.Count > 0)
+        {
+          _goodId = _goodService.Goods.Contains("Water") ? "Water" : _goodService.Goods[0];
+        }
+        return _goodId;
+      }
+      private set => _goodId = value;
+    }
+
     public ResourceCounterMode Mode { get; private set; }
     public bool IncludeInputs { get; private set; }
 
@@ -56,12 +71,7 @@ namespace Calloatti.ResourceMonitor
 
     public void Awake()
     {
-      // Vanilla exactly: unconditionally grabs the first valid good in the registry (Water) 
-      // so the banner has a valid texture to paint the moment it is placed while paused.
-      if (_goodService != null && _goodService.Goods.Count > 0 && string.IsNullOrEmpty(GoodId))
-      {
-        GoodId = _goodService.Goods[0];
-      }
+      // No-op: Initialization is now securely handled on-demand by the smart property getter
     }
 
     public void InitializeEntity()
@@ -71,7 +81,6 @@ namespace Calloatti.ResourceMonitor
 
       if (_districtBuilding != null)
       {
-        _districtBuilding.ReassignedDistrict += OnReassignedDistrict;
         _districtBuilding.ReassignedInstantDistrict += OnReassignedInstantDistrict;
         _districtBuilding.ReassignedConstructionDistrict += OnReassignedConstructionDistrict;
       }
@@ -88,7 +97,6 @@ namespace Calloatti.ResourceMonitor
     {
       if (_districtBuilding != null)
       {
-        _districtBuilding.ReassignedDistrict -= OnReassignedDistrict;
         _districtBuilding.ReassignedInstantDistrict -= OnReassignedInstantDistrict;
         _districtBuilding.ReassignedConstructionDistrict -= OnReassignedConstructionDistrict;
       }
@@ -172,8 +180,7 @@ namespace Calloatti.ResourceMonitor
 
       if (district != null)
       {
-        var districtCounter = _samplingResourcesService.GetDistrictCounter(district);
-        var resourceCount = districtCounter.GetResourceCount(GoodId);
+        var resourceCount = _samplingResourcesService.GetSampledResourceCount(district, GoodId);
 
         if (Mode == ResourceCounterMode.StockLevel)
         {
@@ -191,11 +198,6 @@ namespace Calloatti.ResourceMonitor
       }
 
       UpdateOutputState();
-    }
-
-    private void OnReassignedDistrict(object sender, EventArgs e)
-    {
-      Sample();
     }
 
     private void OnReassignedInstantDistrict(object sender, EventArgs e)

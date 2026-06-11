@@ -2,13 +2,14 @@
 using Timberborn.BaseComponentSystem;
 using Timberborn.BlockSystem;
 using Timberborn.Buildings;
-using Timberborn.EntitySystem;
+using Timberborn.EntitySystem; // FIXED: Required for lifecycle interfaces
 using Timberborn.Goods;
 using UnityEngine;
 
 namespace Calloatti.ResourceMonitor
 {
-  public class ResourceMonitorBannerSetter : BaseComponent, IAwakableComponent, IStartableComponent, IDeletableEntity
+  // 1.1 FIX: Updated to map to internal layout hooks (IInitializablePreview and IInitializableEntity)
+  public class ResourceMonitorBannerSetter : BaseComponent, IAwakableComponent, IInitializablePreview, IInitializableEntity, IDeletableEntity
   {
     private static readonly Color BannerIconColor = new Color(0.33f, 0.33f, 0.33f);
 
@@ -34,7 +35,14 @@ namespace Calloatti.ResourceMonitor
       _meshRenderer = component.FinishedModel.GetComponentInChildren<MeshRenderer>();
     }
 
-    public void Start()
+    // 1.1 FIX: Safely targets the placement blueprint state
+    public void InitializePreview()
+    {
+      UpdateProperties();
+    }
+
+    // 1.1 FIX: Targets the active simulation building loop safely
+    public void InitializeEntity()
     {
       _resourceMonitor.GoodChanged += OnGoodChanged;
       UpdateProperties();

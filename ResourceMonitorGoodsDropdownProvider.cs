@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Timberborn.BaseComponentSystem;
 using Timberborn.DropdownSystem;
+using Timberborn.EntitySystem; // FIXED: Required for IInitializableEntity
 using Timberborn.Goods;
 using Timberborn.GoodsUI;
 using Timberborn.Localization;
@@ -10,7 +11,8 @@ using UnityEngine;
 
 namespace Calloatti.ResourceMonitor
 {
-  internal class ResourceMonitorGoodsDropdownProvider : BaseComponent, IAwakableComponent, IStartableComponent, IExtendedTooltipDropdownProvider, IExtendedDropdownProvider, IDropdownProvider
+  // 1.1 FIX: Swapped out broken legacy Start methods for the official IInitializableEntity hook
+  internal class ResourceMonitorGoodsDropdownProvider : BaseComponent, IAwakableComponent, IInitializableEntity, IExtendedTooltipDropdownProvider, IExtendedDropdownProvider, IDropdownProvider
   {
     private static readonly string AutomationNoneLocKey = "Automation.AutomationNone";
 
@@ -33,7 +35,8 @@ namespace Calloatti.ResourceMonitor
       _resourceMonitor = GetComponent<ResourceMonitor>();
     }
 
-    public void Start()
+    // 1.1 FIX: Populates the items array cleanly during initialization so it isn't null when clicked
+    public void InitializeEntity()
     {
       Items = _goodService.Goods.OrderBy((string good) => FormatDisplayText(good, selected: false)).ToImmutableArray();
     }

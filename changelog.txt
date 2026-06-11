@@ -1,0 +1,4 @@
+1.0.2
+Update to 1.1.0.0
+1.0.1
+Refactored code, avoids desyncs hopefully

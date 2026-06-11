@@ -20,7 +20,9 @@ namespace Calloatti.ResourceMonitor
       public EntityPanelModule Get()
       {
         EntityPanelModule.Builder builder = new EntityPanelModule.Builder();
-        builder.AddMiddleFragment(_fragment);
+
+        // 1.1 FIXED: Added the mandatory layout priority layout argument (100) to conform to the 1.1 entity panel layout specifications
+        builder.AddMiddleFragment(_fragment, 100);
         return builder.Build();
       }
     }
@@ -40,10 +42,7 @@ namespace Calloatti.ResourceMonitor
     {
       TemplateModule.Builder builder = new TemplateModule.Builder();
       builder.AddDecorator<ResourceMonitorSpec, ResourceMonitor>();
-
-      // THIS IS THE MISSING LINK: It attaches the Automator component to your building!
       builder.AddDecorator<ResourceMonitor, Automator>();
-
       builder.AddDecorator<ResourceMonitor, ResourceMonitorGoodsDropdownProvider>();
       builder.AddDecorator<ResourceMonitor, ResourceMonitorBannerSetter>();
       builder.AddDecorator<ResourceMonitor, AutomatorIlluminator>();
