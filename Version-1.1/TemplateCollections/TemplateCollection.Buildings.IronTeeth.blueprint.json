@@ -1,0 +1,8 @@
+{
+  "TemplateCollectionSpec": {
+    "CollectionId": "Buildings.IronTeeth",
+    "Blueprints#append": [
+      "Buildings/Automation/ResourceMonitor/ResourceMonitor.IronTeeth.blueprint"
+    ]
+  }
+}
