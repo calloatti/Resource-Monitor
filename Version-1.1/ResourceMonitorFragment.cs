@@ -75,6 +75,11 @@ namespace Calloatti.ResourceMonitor
       _measurement = _root.Q<Label>("Measurement");
 
       _includeInputsToggle = _root.Q<Toggle>("Toggle");
+
+      // Static Layout Padding: 27px total around checkbox (Only renders in Quantity mode)
+      _includeInputsToggle.style.marginTop = 14;
+      _includeInputsToggle.style.marginBottom = 13;
+
       _includeInputsToggle.RegisterValueChangedCallback(evt => {
         // Consistency Fix: Added null check
         if (_resourceMonitor != null)
@@ -124,6 +129,10 @@ namespace Calloatti.ResourceMonitor
       offWrapper.Q<Dropdown>("ComparisonMode").ToggleDisplayStyle(false); // Destroy the dropdown completely
 
       _thresholdOffField = offWrapper.Q<IntegerField>("Threshold");
+
+      // Static Layout Padding: 13px (Only renders in Quantity mode)
+      _thresholdOffField.style.marginBottom = 13;
+
       _fillRateLabelOff = offTemplate.Q<Label>("FillRateLabel");
       _fillRateSliderOff = offTemplate.Q<PreciseSlider>("FillRateSlider");
 

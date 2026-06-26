@@ -63,7 +63,6 @@ namespace Calloatti.ResourceMonitor
 
       _modeRadioToggle = _radioToggleFactory.CreateLocalizable<ResourceCounterMode>(ModeLocKeyPrefix, _root.Q<VisualElement>("ModeRadioToggleContainer"));
       _modeRadioToggle.RadioButtonSelected += (sender, index) => {
-        // Consistency Fix: Added null check
         if (_resourceMonitor != null)
         {
           _resourceMonitor.SetMode((ResourceCounterMode)index);
@@ -75,8 +74,12 @@ namespace Calloatti.ResourceMonitor
       _measurement = _root.Q<Label>("Measurement");
 
       _includeInputsToggle = _root.Q<Toggle>("Toggle");
+
+      // Static Layout Padding: 27px total around checkbox (Only renders in Quantity mode)
+      _includeInputsToggle.style.marginTop = 14;
+      _includeInputsToggle.style.marginBottom = 13;
+
       _includeInputsToggle.RegisterValueChangedCallback(evt => {
-        // Consistency Fix: Added null check
         if (_resourceMonitor != null)
         {
           _resourceMonitor.SetIncludeInputs(evt.newValue);
@@ -88,6 +91,7 @@ namespace Calloatti.ResourceMonitor
       onWrapper.Q<Dropdown>("ComparisonMode").ToggleDisplayStyle(false); // Destroy the dropdown completely
 
       _thresholdOnField = onWrapper.Q<IntegerField>("Threshold");
+
       _fillRateLabelOn = _root.Q<Label>("FillRateLabel");
       _fillRateSliderOn = _root.Q<PreciseSlider>("FillRateSlider");
 
@@ -96,7 +100,6 @@ namespace Calloatti.ResourceMonitor
         if (_resourceMonitor != null)
         {
           int val = Math.Max(0, evt.newValue);
-
           _thresholdOnField.SetValueWithoutNotify(val);
           _resourceMonitor.SetThresholdOn(val);
         }
@@ -124,6 +127,10 @@ namespace Calloatti.ResourceMonitor
       offWrapper.Q<Dropdown>("ComparisonMode").ToggleDisplayStyle(false); // Destroy the dropdown completely
 
       _thresholdOffField = offWrapper.Q<IntegerField>("Threshold");
+
+      // Static Layout Padding: 13px (Only renders in Quantity mode)
+      _thresholdOffField.style.marginBottom = 13;
+
       _fillRateLabelOff = offTemplate.Q<Label>("FillRateLabel");
       _fillRateSliderOff = offTemplate.Q<PreciseSlider>("FillRateSlider");
 
@@ -132,7 +139,6 @@ namespace Calloatti.ResourceMonitor
         if (_resourceMonitor != null)
         {
           int val = Math.Max(0, evt.newValue);
-
           _thresholdOffField.SetValueWithoutNotify(val);
           _resourceMonitor.SetThresholdOff(val);
         }
@@ -194,7 +200,6 @@ namespace Calloatti.ResourceMonitor
         _fillRateSliderOn.SetMarker(_resourceMonitor.SampledFillRate);
         _fillRateSliderOff.SetMarker(_resourceMonitor.SampledFillRate);
 
-        // Uses ILoc for the dynamic measurement text, passing in the arguments for the {0} placeholder.
         _measurement.text = _resourceMonitor.Mode == ResourceCounterMode.StockLevel
             ? _loc.T(MeasurementQuantityLocKey, _resourceMonitor.SampledResourceCount)
             : _loc.T(MeasurementPercentLocKey, Math.Round(_resourceMonitor.SampledFillRate * 100));
