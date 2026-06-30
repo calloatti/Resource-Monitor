@@ -1,54 +1,17 @@
-Resource Monitor
+﻿Resource Monitor
+
+https://github.com/calloatti/Resource-Monitor
 
 https://steamcommunity.com/sharedfiles/filedetails/?id=3683375263
 
-RESOURCE MONITOR MOD - TECHNICAL ARCHITECTURE & EXPLANATION
+Mods on GitHub
 
-1. OVERVIEW
-The Resource Monitor mod introduces a custom automation building to Timberborn. Its primary 
-function is to track the stock level or fill rate of a specific resource (Good) within its 
-connected District. Based on user-defined upper and lower thresholds, it outputs an automation 
-signal (true/false) via the base game's Automator component. This allows players to turn other 
-buildings (like pumps or factories) on or off automatically based on district-wide inventory.
+https://github.com/search?q=owner%3Acalloatti+sort%3Aname-asc+%22Timberborn+Mod%22&type=repositories
 
-2. CORE COMPONENT (ResourceMonitor.cs)
-This is the central logic script attached to the building prefab.
-- Inheritance: Inherits from `BaseComponent` and implements interfaces for saving/loading 
-(`IPersistentEntity`), duplication (`IDuplicable`), and ticking (`IStartableComponent`, 
-`ISamplingTransmitter`).
-- Lazy-Loading: Because Timberborn's save-loading sequence instantiates entities before path 
-networks are fully calculated, it bypasses `Awake` and uses lazy-loading inside the `Sample()` 
-loop to safely grab `Automator` and `DistrictBuilding` references.
-- Logic Loop: The `Sample()` method grabs the active `DistrictCenter`, queries the 
-`ResourceCountingService` for the selected `GoodId`, and compares the current stock/fill rate 
-against the `ThresholdOn` and `ThresholdOff` values.
-- Output: Calls `_automator.SetState(true/false)` to propagate the automation signal to 
-connected mechanical networks.
+Mods on Steam Workshop
 
-3. USER INTERFACE (ResourceMonitorFragment.cs & ResourceMonitorGoodsDropdownProvider.cs)
-Timberborn uses a fragment-based UI system for building panels.
-- Fragment: Binds to the UI elements (sliders, text fields, dropdowns) when the player selects 
-the building. It reads the current thresholds from the `ResourceMonitor` component and updates 
-the UI. When the player adjusts a slider, it writes the new threshold back to the component.
-- Dropdown Provider: Injects the `IGoodService` to fetch a list of all available resources in 
-the game. It populates the dropdown menu, allowing the player to select which specific Good 
-(e.g., Water, Logs, Iron) the building should monitor.
+https://steamcommunity.com/sharedfiles/filedetails/?id=3682179025
 
-4. VISUAL FEEDBACK (ResourceMonitorBannerSetter.cs)
-Provides at-a-glance information to the player without needing to click the building.
-- It listens for the `GoodChanged` event triggered by the core component.
-- When the monitored resource changes, it updates the visual icon/banner on the physical 3D 
-model of the building to display the correct Good icon.
+Mods zip files
 
-5. DEPENDENCY INJECTION (ResourceMonitorConfigurator.cs)
-Timberborn uses Bindito (a custom dependency injection framework based on Zenject).
-- This script registers the mod's classes into the game's ECS (Entity Component System).
-- It binds the `ResourceMonitorFragment` to the UI builder so it appears in the entity panel.
-- It acts as the glue that ensures the core logic, UI, and visual setters are properly 
-instantiated and linked when the building is placed.
-
-6. INITIALIZATION (ResourceMonitorModStarter.cs & ResourceMonitorSpec.cs)
-- Starter: The entry point loaded by the mod manager. It applies any necessary Harmony patches 
-and logs the successful initialization of the mod.
-- Spec: Acts as a data container (ScriptableObject equivalent) that defines default properties 
-and links the custom script to the building's JSON blueprint template.
+https://github.com/calloatti/ModZips
