@@ -1,6 +1,16 @@
-1.0.3
-Fixed spec record
-1.0.2
-Update to 1.1.0.0
-1.0.1
-Refactored code, avoids desyncs hopefully
+--------------------------------------------------------------------------------
+Game Version: 1.1.0.0
+Mod Version: 1.0.4
+- Add Emberpelts support
+--------------------------------------------------------------------------------
+Game Version: 1.1.0.0
+Mod Version: 1.0.3
+- Fixed spec record
+--------------------------------------------------------------------------------
+Game Version: 1.1.0.0
+Mod Version: 1.0.2
+- Update to 1.1.0.0
+--------------------------------------------------------------------------------
+Game Version: 1.1.0.0
+Mod Version: 1.0.1
+- Refactored code, avoids desyncs hopefully

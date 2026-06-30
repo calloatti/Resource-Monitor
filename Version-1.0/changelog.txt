@@ -1,0 +1,8 @@
+--------------------------------------------------------------------------------
+Game Version: 1.0.0.0
+Mod Version: 1.0.4
+- Add Emberpelts support
+--------------------------------------------------------------------------------
+Game Version: 1.0.0.0
+Mod Version: 1.0.1
+- Refactored code, avoids desyncs hopefully

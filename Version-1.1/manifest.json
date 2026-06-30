@@ -1,6 +1,6 @@
 {
   "Name": "Resource Monitor",
-  "Version": "1.0.3",
+  "Version": "1.0.4",
   "Id": "Calloatti.ResourceMonitor",
   "MinimumGameVersion": "1.1.0.0",
   "Description": "Monitors district resource levels to trigger automation signals based on configurable min-max thresholds.",
