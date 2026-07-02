@@ -1,4 +1,4 @@
-{
+﻿{
   "BuildingSpec": {
     "SelectionSoundName": "Automation",
     "LoopingSoundName": "",
@@ -31,8 +31,7 @@
   },
   "TemplateSpec": {
     "TemplateName": "ResourceMonitor.Emberpelts",
-    "BackwardCompatibleTemplateNames": [
-    ],
+    "BackwardCompatibleTemplateNames": [],
     "RequiredFeatureToggle": "",
     "DisablingFeatureToggle": ""
   },
@@ -108,10 +107,8 @@
       0.0
     ]
   },
-  "ResourceMonitorSpec": {
-  },
-  "FloodableObjectBlockerSpec": {
-  },
+  "ResourceMonitorSpec": {},
+  "FloodableObjectBlockerSpec": {},
   "BuildingAccessibleSpec": {
     "LocalAccess": {
       "X": 0.5,
@@ -179,10 +176,8 @@
             }
           }
         ],
-        "SphereColliders": [
-        ],
-        "CapsuleColliders": [
-        ]
+        "SphereColliders": [],
+        "CapsuleColliders": []
       }
     },
     "#Unfinished": {
@@ -233,10 +228,8 @@
                 }
               }
             ],
-            "SphereColliders": [
-            ],
-            "CapsuleColliders": [
-            ]
+            "SphereColliders": [],
+            "CapsuleColliders": []
           }
         }
       }

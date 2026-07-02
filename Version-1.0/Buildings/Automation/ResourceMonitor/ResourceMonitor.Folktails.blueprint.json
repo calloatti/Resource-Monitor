@@ -1,13 +1,28 @@
-{
+﻿{
   "BuildingSpec": {
     "SelectionSoundName": "Automation",
     "LoopingSoundName": "",
     "BuildingCost": [
-      { "Id": "Plank", "Amount": 8 },
-      { "Id": "Gear", "Amount": 8 },
-      { "Id": "Paper", "Amount": 2 },
-      { "Id": "MetalBlock", "Amount": 1 },
-      { "Id": "Extract", "Amount": 1}
+      {
+        "Id": "Plank",
+        "Amount": 8
+      },
+      {
+        "Id": "Gear",
+        "Amount": 8
+      },
+      {
+        "Id": "Paper",
+        "Amount": 2
+      },
+      {
+        "Id": "MetalBlock",
+        "Amount": 1
+      },
+      {
+        "Id": "Extract",
+        "Amount": 1
+      }
     ],
     "ScienceCost": 1250,
     "PlaceFinished": false,
@@ -32,7 +47,11 @@
     "UndergroundModelDepth": 0
   },
   "BlockObjectSpec": {
-    "Size": { "X": 1, "Y": 1, "Z": 2 },
+    "Size": {
+      "X": 1,
+      "Y": 1,
+      "Z": 2
+    },
     "Blocks": [
       {
         "MatterBelow": "GroundOrStackable",
@@ -51,7 +70,11 @@
     ],
     "Entrance": {
       "HasEntrance": true,
-      "Coordinates": { "X": 0, "Y": -1, "Z": 0 }
+      "Coordinates": {
+        "X": 0,
+        "Y": -1,
+        "Z": 0
+      }
     },
     "BaseZ": 0,
     "Overridable": false,
@@ -64,7 +87,11 @@
     "Layout": "Single",
     "CustomPivot": {
       "HasCustomPivot": false,
-      "Coordinates": { "X": 0.0, "Y": 0.0, "Z": 0.0 }
+      "Coordinates": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      }
     },
     "CanBeAttachedToTerrainSide": false,
     "DevModeTool": false
@@ -76,12 +103,18 @@
     "Icon": "Buildings/Automation/ResourceCounter/ResourceCounterIcon"
   },
   "ConstructionSiteProgressVisualizerSpec": {
-    "ProgressThresholds": [ 0.0 ]
+    "ProgressThresholds": [
+      0.0
+    ]
   },
   "ResourceMonitorSpec": {},
   "FloodableObjectBlockerSpec": {},
   "BuildingAccessibleSpec": {
-    "LocalAccess": { "X": 0.5, "Y": 0.0, "Z": 0.5 },
+    "LocalAccess": {
+      "X": 0.5,
+      "Y": 0.0,
+      "Z": 0.5
+    },
     "ForceOneFinalAccess": false
   },
   "DefaultIlluminatorColorSpec": {
@@ -95,20 +128,52 @@
       "CollidersSpec": {
         "BoxColliders": [
           {
-            "Center": { "X": 0.5, "Y": 0.0433799326, "Z": 0.448400676 },
-            "Size": { "X": 0.7994808, "Y": 0.0857045949, "Z": 0.8941646 }
+            "Center": {
+              "X": 0.5,
+              "Y": 0.0433799326,
+              "Z": 0.448400676
+            },
+            "Size": {
+              "X": 0.7994808,
+              "Y": 0.0857045949,
+              "Z": 0.8941646
+            }
           },
           {
-            "Center": { "X": 0.5, "Y": 0.6363938, "Z": 0.4967695 },
-            "Size": { "X": 0.2668205, "Y": 1.08751535, "Z": 0.25957644 }
+            "Center": {
+              "X": 0.5,
+              "Y": 0.6363938,
+              "Z": 0.4967695
+            },
+            "Size": {
+              "X": 0.2668205,
+              "Y": 1.08751535,
+              "Z": 0.25957644
+            }
           },
           {
-            "Center": { "X": 0.5, "Y": 0.638202131, "Z": 0.497906476 },
-            "Size": { "X": 0.597399354, "Y": 0.5919751, "Z": 0.595666945 }
+            "Center": {
+              "X": 0.5,
+              "Y": 0.638202131,
+              "Z": 0.497906476
+            },
+            "Size": {
+              "X": 0.597399354,
+              "Y": 0.5919751,
+              "Z": 0.595666945
+            }
           },
           {
-            "Center": { "X": 0.5, "Y": 1.39544606, "Z": 0.497906476 },
-            "Size": { "X": 0.3915317, "Y": 0.436902523, "Z": 0.4121508 }
+            "Center": {
+              "X": 0.5,
+              "Y": 1.39544606,
+              "Z": 0.497906476
+            },
+            "Size": {
+              "X": 0.3915317,
+              "Y": 0.436902523,
+              "Z": 0.4121508
+            }
           }
         ],
         "SphereColliders": [],
@@ -127,16 +192,40 @@
           "CollidersSpec": {
             "BoxColliders": [
               {
-                "Center": { "X": 0.5, "Y": 0.05, "Z": 0.5 },
-                "Size": { "X": 0.800333738, "Y": 0.1, "Z": 0.800995946 }
+                "Center": {
+                  "X": 0.5,
+                  "Y": 0.05,
+                  "Z": 0.5
+                },
+                "Size": {
+                  "X": 0.800333738,
+                  "Y": 0.1,
+                  "Z": 0.800995946
+                }
               },
               {
-                "Center": { "X": 0.501479864, "Y": 0.6428672, "Z": 0.499852836 },
-                "Size": { "X": 0.161834955, "Y": 1.08519769, "Z": 0.162684679 }
+                "Center": {
+                  "X": 0.501479864,
+                  "Y": 0.6428672,
+                  "Z": 0.499852836
+                },
+                "Size": {
+                  "X": 0.161834955,
+                  "Y": 1.08519769,
+                  "Z": 0.162684679
+                }
               },
               {
-                "Center": { "X": 0.501479864, "Y": 0.6428672, "Z": 0.499852836 },
-                "Size": { "X": 0.600452662, "Y": 0.5939703, "Z": 0.5964281 }
+                "Center": {
+                  "X": 0.501479864,
+                  "Y": 0.6428672,
+                  "Z": 0.499852836
+                },
+                "Size": {
+                  "X": 0.600452662,
+                  "Y": 0.5939703,
+                  "Z": 0.5964281
+                }
               }
             ],
             "SphereColliders": [],
