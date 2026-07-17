@@ -1,0 +1,10 @@
+ID,Text,Comment
+Building.ResourceMonitor.DisplayName,"Монитор ресурсов",
+Building.ResourceMonitor.Description,"Изменяет и удерживает своё состояние на основе минимального и максимального сигналов.",
+Building.ResourceMonitor.FlavorDescription,"Лучше, чем счётчик ресурсов!",
+Building.ResourceMonitor.Mode.FillRate,"Процент (%)",
+Building.ResourceMonitor.Mode.StockLevel,"Количество",
+Building.ResourceMonitor.TurnOnIf,"ВКЛЮЧИТЬ если ≤",
+Building.ResourceMonitor.TurnOffIf,"ВЫКЛЮЧИТЬ если ≥",
+Building.ResourceMonitor.MeasurementQuantity,"Измерение: {0}",
+Building.ResourceMonitor.MeasurementPercent,"Измерение: {0}%",

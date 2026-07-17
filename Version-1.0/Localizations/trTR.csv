@@ -1,0 +1,10 @@
+ID,Text,Comment
+Building.ResourceMonitor.DisplayName,"Kaynak Monitörü",
+Building.ResourceMonitor.Description,"Min ve maks sinyallerine göre durumunu değiştirir ve korur.",
+Building.ResourceMonitor.FlavorDescription,"Bir Kaynak Sayacından daha iyi!",
+Building.ResourceMonitor.Mode.FillRate,"Yüzde (%)",
+Building.ResourceMonitor.Mode.StockLevel,"Miktar",
+Building.ResourceMonitor.TurnOnIf,"≤ ise AÇ",
+Building.ResourceMonitor.TurnOffIf,"≥ ise KAPAT",
+Building.ResourceMonitor.MeasurementQuantity,"Ölçüm: {0}",
+Building.ResourceMonitor.MeasurementPercent,"Ölçüm: {0}%",

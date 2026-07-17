@@ -1,0 +1,10 @@
+ID,Text,Comment
+Building.ResourceMonitor.DisplayName,"資源監視器",
+Building.ResourceMonitor.Description,"根據最小和最大信號改變並保持其狀態。",
+Building.ResourceMonitor.FlavorDescription,"比資源計數器更好！",
+Building.ResourceMonitor.Mode.FillRate,"百分比 (%)",
+Building.ResourceMonitor.Mode.StockLevel,"數量",
+Building.ResourceMonitor.TurnOnIf,"≤ 時開啟",
+Building.ResourceMonitor.TurnOffIf,"≥ 時關閉",
+Building.ResourceMonitor.MeasurementQuantity,"測量值: {0}",
+Building.ResourceMonitor.MeasurementPercent,"測量值: {0}%",

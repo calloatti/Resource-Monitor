@@ -1,0 +1,10 @@
+ID,Text,Comment
+Building.ResourceMonitor.DisplayName,"Ressourcenmonitor",
+Building.ResourceMonitor.Description,"Ändert und hält seinen Zustand basierend auf Min- und Max-Signalen.",
+Building.ResourceMonitor.FlavorDescription,"Besser als ein Ressourcenzähler!",
+Building.ResourceMonitor.Mode.FillRate,"Prozent (%)",
+Building.ResourceMonitor.Mode.StockLevel,"Menge",
+Building.ResourceMonitor.TurnOnIf,"EINSCHALTEN wenn ≤",
+Building.ResourceMonitor.TurnOffIf,"AUSSCHALTEN wenn ≥",
+Building.ResourceMonitor.MeasurementQuantity,"Messung: {0}",
+Building.ResourceMonitor.MeasurementPercent,"Messung: {0}%",

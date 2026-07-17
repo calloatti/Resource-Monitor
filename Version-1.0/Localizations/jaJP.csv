@@ -1,0 +1,10 @@
+ID,Text,Comment
+Building.ResourceMonitor.DisplayName,"リソースモニター",
+Building.ResourceMonitor.Description,"最小および最大の信号に基づいて状態を変更し保持します。",
+Building.ResourceMonitor.FlavorDescription,"リソースカウンターよりすごい！",
+Building.ResourceMonitor.Mode.FillRate,"パーセント (%)",
+Building.ResourceMonitor.Mode.StockLevel,"数量",
+Building.ResourceMonitor.TurnOnIf,"以下の場合ON: ≤",
+Building.ResourceMonitor.TurnOffIf,"以上の場合OFF: ≥",
+Building.ResourceMonitor.MeasurementQuantity,"測定: {0}",
+Building.ResourceMonitor.MeasurementPercent,"測定: {0}%",
