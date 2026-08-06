@@ -1,8 +1,6 @@
 ﻿{
   "TemplateCollectionSpec": {
     "CollectionId": "Buildings.Folktails",
-    "Blueprints#append": [
-      "Buildings/Automation/ResourceMonitor/ResourceMonitor.Folktails.blueprint"
-    ]
+    "Blueprints#append": ["Buildings/Automation/ResourceMonitor/ResourceMonitor.Folktails.blueprint"]
   }
 }
