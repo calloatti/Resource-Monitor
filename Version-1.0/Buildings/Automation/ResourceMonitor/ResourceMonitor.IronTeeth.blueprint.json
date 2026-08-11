@@ -65,7 +65,7 @@
     "DisplayNameLocKey": "Building.ResourceMonitor.DisplayName",
     "DescriptionLocKey": "Building.ResourceMonitor.Description",
     "FlavorDescriptionLocKey": "Building.ResourceMonitor.FlavorDescription",
-    "Icon": "Buildings/Automation/ResourceCounter/ResourceCounterIcon"
+    "Icon": "Resources/Buildings/Automation/ResourceMonitor/ResourceMonitorIcon"
   },
   "ConstructionSiteProgressVisualizerSpec": {"ProgressThresholds": [0]},
   "ResourceMonitorSpec": {},

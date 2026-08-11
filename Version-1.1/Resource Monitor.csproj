@@ -3,18 +3,18 @@
   <PropertyGroup>
     <AssemblyName>resourcemonitor</AssemblyName>
     <RootNamespace>Calloatti.ResourceMonitor</RootNamespace>
+    <TimberbornPath>C:\Program Files (x86)\Steam\steamapps\common\timberborn_experimental\Timberborn_Data\Managed</TimberbornPath>
   </PropertyGroup>
 
   <Import Project="CommonModSettings.props" />
 
-  <PropertyGroup>
-    <TimberbornPath>C:\Program Files (x86)\Steam\steamapps\common\timberborn_experimental\Timberborn_Data\Managed</TimberbornPath>
-  </PropertyGroup>
-
   <ItemGroup>
-    <Publicize Remove="Timberborn.GameDistricts" />
-    <Publicize Remove="Timberborn.BlueprintSystem" />
-    <Publicize Remove="Timberborn.CoreUI" />
+    <DoNotPublicize Include="Timberborn.GameDistricts:Timberborn.GameDistricts.DistrictBuilding.ReassignedDistrict" />
+    <DoNotPublicize Include="Timberborn.GameDistricts:Timberborn.GameDistricts.DistrictBuilding.ReassignedInstantDistrict" />
+    <DoNotPublicize Include="Timberborn.GameDistricts:Timberborn.GameDistricts.DistrictBuilding.ReassignedConstructionDistrict" />
+    <DoNotPublicize Include="Timberborn.CoreUI:Timberborn.CoreUI.RadioToggle.RadioButtonSelected" />
+    <DoNotPublicize Include="Timberborn.BlueprintSystem:Timberborn.BlueprintSystem.ComponentSpec.EqualityContract" />
+    <DoNotPublicize Include="Timberborn.BlueprintSystem:Timberborn.BlueprintSystem.ComponentSpec.PrintMembers" />
   </ItemGroup>
 
 </Project>
