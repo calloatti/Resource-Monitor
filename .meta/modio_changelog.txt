@@ -1,0 +1,4 @@
+* Game Version: 1.1.0.0 - Mod Version: 1.0.6
+- Removed reflection
+* Game Version: 1.0.0.0 - Mod Version: 1.0.6
+- Removed reflection

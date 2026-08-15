@@ -1,0 +1,1 @@
+Monitors district resource levels to trigger automation signals based on configurable min-max thresholds.
