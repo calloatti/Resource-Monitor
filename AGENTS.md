@@ -28,3 +28,8 @@ Adds a resource monitor building that displays real-time good amounts and throug
 ## Version Folders
 - `Version-1.0` — targets game 1.0.x.x
 - `Version-1.1` — targets game 1.1.x.x
+
+## Hard Rule
+DO NOT EVER TOUCH THE DEPLOY FOLDER.
+
+BUILD DOES EVERYTHING, NEVER EVER MESS WITH THE DEPLOY PROCESS.
