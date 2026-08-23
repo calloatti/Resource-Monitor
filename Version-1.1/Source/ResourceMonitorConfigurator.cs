@@ -22,7 +22,7 @@ namespace Calloatti.ResourceMonitor
         EntityPanelModule.Builder builder = new EntityPanelModule.Builder();
 
         // 1.1 FIXED: Added the mandatory layout priority layout argument (100) to conform to the 1.1 entity panel layout specifications
-        builder.AddMiddleFragment(_fragment, 100);
+        builder.AddMiddleFragment(_fragment, 50);
         return builder.Build();
       }
     }

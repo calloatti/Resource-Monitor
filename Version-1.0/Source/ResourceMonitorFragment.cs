@@ -1,6 +1,5 @@
 ﻿using System;
 using Timberborn.AutomationBuildings;
-using Timberborn.AutomationBuildingsUI;
 using Timberborn.BaseComponentSystem;
 using Timberborn.CoreUI;
 using Timberborn.DropdownSystem;
@@ -14,7 +13,6 @@ namespace Calloatti.ResourceMonitor
   {
     private static readonly string ModeLocKeyPrefix = "Building.ResourceMonitor.Mode.";
 
-    // Our new localization keys matching your CSV
     private static readonly string TurnOnIfLocKey = "Building.ResourceMonitor.TurnOnIf";
     private static readonly string TurnOffIfLocKey = "Building.ResourceMonitor.TurnOffIf";
     private static readonly string MeasurementQuantityLocKey = "Building.ResourceMonitor.MeasurementQuantity";
@@ -58,8 +56,7 @@ namespace Calloatti.ResourceMonitor
 
     public VisualElement InitializeFragment()
     {
-      _root = _visualElementLoader.LoadVisualElement("Game/EntityPanel/ResourceCounterFragment");
-      var bottomSection = _root.Q<VisualElement>("BottomSection");
+      _root = _visualElementLoader.LoadVisualElement("ResourceMonitor/ResourceMonitorFragment");
 
       _modeRadioToggle = _radioToggleFactory.CreateLocalizable<ResourceCounterMode>(ModeLocKeyPrefix, _root.Q<VisualElement>("ModeRadioToggleContainer"));
       _modeRadioToggle.RadioButtonSelected += (sender, index) => {
@@ -74,11 +71,6 @@ namespace Calloatti.ResourceMonitor
       _measurement = _root.Q<Label>("Measurement");
 
       _includeInputsToggle = _root.Q<Toggle>("Toggle");
-
-      // Static Layout Padding: 27px total around checkbox (Only renders in Quantity mode)
-      _includeInputsToggle.style.marginTop = 14;
-      _includeInputsToggle.style.marginBottom = 13;
-
       _includeInputsToggle.RegisterValueChangedCallback(evt => {
         if (_resourceMonitor != null)
         {
@@ -86,12 +78,9 @@ namespace Calloatti.ResourceMonitor
         }
       });
 
-      // 1. Setup ON Controls
       var onWrapper = _root.Q<VisualElement>("ComparisonWrapper");
-      onWrapper.Q<Dropdown>("ComparisonMode").ToggleDisplayStyle(false); // Destroy the dropdown completely
 
       _thresholdOnField = onWrapper.Q<IntegerField>("Threshold");
-
       _fillRateLabelOn = _root.Q<Label>("FillRateLabel");
       _fillRateSliderOn = _root.Q<PreciseSlider>("FillRateSlider");
 
@@ -100,6 +89,7 @@ namespace Calloatti.ResourceMonitor
         if (_resourceMonitor != null)
         {
           int val = Math.Max(0, evt.newValue);
+
           _thresholdOnField.SetValueWithoutNotify(val);
           _resourceMonitor.SetThresholdOn(val);
         }
@@ -114,31 +104,21 @@ namespace Calloatti.ResourceMonitor
         }
       });
 
-      // Use ILoc for the ON title
-      var onTitle = new Label(_loc.T(TurnOnIfLocKey));
-      onTitle.AddToClassList("game-text-normal");
-      onTitle.style.marginTop = 10;
-      bottomSection.Insert(bottomSection.IndexOf(onWrapper), onTitle);
+      var onTitle = _root.Q<Label>("OnTitle");
+      onTitle.text = _loc.T(TurnOnIfLocKey);
 
+      var offWrapper = _root.Q<VisualElement>("OffComparisonWrapper");
 
-      // 2. Setup OFF Controls
-      var offTemplate = _visualElementLoader.LoadVisualElement("Game/EntityPanel/ResourceCounterFragment");
-      var offWrapper = offTemplate.Q<VisualElement>("ComparisonWrapper");
-      offWrapper.Q<Dropdown>("ComparisonMode").ToggleDisplayStyle(false); // Destroy the dropdown completely
-
-      _thresholdOffField = offWrapper.Q<IntegerField>("Threshold");
-
-      // Static Layout Padding: 13px (Only renders in Quantity mode)
-      _thresholdOffField.style.marginBottom = 13;
-
-      _fillRateLabelOff = offTemplate.Q<Label>("FillRateLabel");
-      _fillRateSliderOff = offTemplate.Q<PreciseSlider>("FillRateSlider");
+      _thresholdOffField = offWrapper.Q<IntegerField>("ThresholdOff");
+      _fillRateLabelOff = _root.Q<Label>("FillRateLabelOff");
+      _fillRateSliderOff = _root.Q<PreciseSlider>("FillRateSliderOff");
 
       _thresholdOffField.isDelayed = true;
       _thresholdOffField.RegisterValueChangedCallback(evt => {
         if (_resourceMonitor != null)
         {
           int val = Math.Max(0, evt.newValue);
+
           _thresholdOffField.SetValueWithoutNotify(val);
           _resourceMonitor.SetThresholdOff(val);
         }
@@ -153,14 +133,8 @@ namespace Calloatti.ResourceMonitor
         }
       });
 
-      // Use ILoc for the OFF title
-      var offTitle = new Label(_loc.T(TurnOffIfLocKey));
-      offTitle.AddToClassList("game-text-normal");
-      offTitle.style.marginTop = 10;
-      bottomSection.Add(offTitle);
-      bottomSection.Add(offWrapper);
-      bottomSection.Add(_fillRateLabelOff);
-      bottomSection.Add(_fillRateSliderOff);
+      var offTitle = _root.Q<Label>("OffTitle");
+      offTitle.text = _loc.T(TurnOffIfLocKey);
 
       _root.ToggleDisplayStyle(false);
       return _root;
